@@ -1,5 +1,5 @@
 
-var base = `https://covidtracking.com/api/v1/`;
+var base = 'https://covidtracking.com/api/v1/';
 var endpointOptions = [
     {
         name: 'US Current',
@@ -75,7 +75,7 @@ function usDaily(data) {
             <td>${addCommas(data[idx].deathIncrease)}</td>
         </tr>`
     }
-    html += `</tbody></table>`
+    html += '</tbody></table>'
 
     results.innerHTML = html;
 }
@@ -104,12 +104,11 @@ function statesCurrent(data) {
             <td>${data[idx].dataQualityGrade}</td>
         </tr>`
     }
-    html += `</tbody></table>`;
-    html += ``
+    html += '</tbody></table>';
     results.innerHTML = html;
-    $("#searchState").on("keyup", function() {
+    $('#searchState').on('keyup', function() {
         var value = $(this).val().toLowerCase();
-        $("#resultsTable tr").filter(function() {
+        $('#resultsTable tr').filter(function() {
           $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
       });
@@ -131,7 +130,7 @@ function addCommas(num) {
     if(!num) {
         return num
     }
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 /**
