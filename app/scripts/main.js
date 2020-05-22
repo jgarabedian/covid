@@ -119,7 +119,7 @@ function usCurrent(data) {
         <h3>Current US Cases</h3>
         <h5>Total Deaths: ${addCommas(data.death)}</h5>
         <h5>Positive: ${addCommas(data.positive)}</h5>
-        <h5>Currently Hospitalized: ${addCommas(data.positive)}</h5>
+        <h5>Currently Hospitalized: ${addCommas(data.hospitalizedCurrently)}</h5>
         <h5>Currently in ICU: ${addCommas(data.inIcuCurrently)}</h5>
         <h5>Currently on Ventilater: ${addCommas(data.onVentilatorCurrently)}</h5>
         `
