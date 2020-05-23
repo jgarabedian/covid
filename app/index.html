@@ -23,7 +23,7 @@
     <script src="scripts/modernizr.js"></script>
     <!-- endbuild -->
   </head>
-  <body>
+  <body class="bg-light">
     <!--[if IE]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -33,16 +33,13 @@
         
       </div>
       <p class="text-muted">
-        Thanks to <a href="https://covidtracking.com/" class="text-reset">Covid Tracking</a> for the data.
+        Thanks to <a href="https://covidtracking.com/" target="_blank" class="text-reset">Covid Tracking</a> for the data.
         <a href="https://github.com/jgarabedian/covid/" target="_blank"><i class="fab fa-github-square fa-md" style="color: black;"></i></a>
       </p>
+      
       <form class="form-inline" id="form">
           <label for="endpointInput" class="mb-2 mr-sm-2">Choose Type</label>
-            <select id="endpointInput" class="mb-2 mr-sm-2">
-              <option>Choose an Endpoint</option>
-              <!-- <option>US Current</option>
-              <option>US Daily</option> -->
-            </select> 
+            <select id="endpointInput" class="mb-2 mr-sm-2"></select> 
       </form>
         <div id="results">
           <h3>Choose your metric</h3>

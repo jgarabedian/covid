@@ -48,64 +48,101 @@ function createDropdown() {
     }
 }
 
-function usDaily(data) {
-    let html = `
-        <table class="table table-hover">
-        <thead>
-            <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Positive</th>
-            <th scope="col">Deaths</th>
-            <th scope="col">Death Increase</th>
-            </tr>
-        </thead>
-        <tbody id="resultsTable">
-    `
-    let len = data.length;
-    if(len > 100) {
-        len = 100
+function createTable(cols, rows, caption) {
+    let html = `<table class="table table-hover">`;
+    html += `<caption>${caption}</caption>`;
+    html += `<thead><tr class="table-info">`;
+    for (let col of cols) {
+        html += `<th scope="col">${col.name}</th>`
     }
-    for (let idx = 0; idx < len; idx++) {
-        let date = data[idx]['date'].toString()
-        date = `${date.substring(0,4)}-${date.substring(4,6)}-${date.substring(6,8)}`
-        html += `<tr>
-            <th scope="row">${date}</th>
-            <td>${addCommas(data[idx].positive)}</td>
-            <td>${addCommas(data[idx].death)}</td>
-            <td>${addCommas(data[idx].deathIncrease)}</td>
-        </tr>`
+    html += '</tr></thead>'
+    html += '<tbody id="resultsTable">'
+    
+    for (let row of rows) {
+        html += `<tr>`
+        for (let col of cols) {
+            if(col.accessor === 'date') {
+                let date = row[col.accessor].toString()
+                date = `${date.substring(0,4)}-${date.substring(4,6)}-${date.substring(6,8)}`
+                html += `<td>${date}</td>`
+            } else {
+                html += `<td>${!isNaN(row[col.accessor]) ? addCommas(row[col.accessor]) : row[col.accessor]}</td>`
+            } 
+        }
+        html += '</tr>'
+        
     }
-    html += '</tbody></table>'
+    html += '</tbody><table>'
+    return html;
+}
 
-    results.innerHTML = html;
+function usDaily(data) {
+    let cols = [
+        {
+            'name': 'Date',
+            'accessor': 'date'
+        },
+        {
+            'name': 'Positive',
+            'accessor': 'positive'
+        },
+        {
+            'name': 'Deaths',
+            'accessor': 'death'
+        },
+        {
+            'name': 'Death Increase',
+            'accessor': 'deathIncrease'
+        },
+        {
+            'name': 'Positive',
+            'accessor': 'positive'
+        },
+        {
+            'name': 'Positive Increase',
+            'accessor': 'positiveIncrease'
+        },
+        {
+            'name': 'Negative',
+            'accessor': 'negative'
+        }
+    ]
+    let caption = 'US Daily'
+
+
+    results.innerHTML = createTable(cols, data, caption);
 }
 
 
 
 function statesCurrent(data) {
-    let html = `
-    <input class="form-control" id="searchState" type="text" placeholder="Search State...">
-        <table class="table table-hover">
-        <thead>
-            <tr>
-            <th scope="col">State</th>
-            <th scope="col">Positive</th>
-            <th scope="col">Deaths</th>
-            <th scope="col">Data Quality</th>
-            </tr>
-        </thead>
-        <tbody id="resultsTable">
-    `
-    for (let idx = 0; idx < data.length; idx++) {
-        html += `<tr>
-            <th scope="row">${data[idx].state}</th>
-            <td>${addCommas(data[idx].positive)}</td>
-            <td>${addCommas(data[idx].death)}</td>
-            <td>${data[idx].dataQualityGrade}</td>
-        </tr>`
-    }
-    html += '</tbody></table>';
-    results.innerHTML = html;
+    let cols = [
+        {
+            'name': 'State',
+            'accessor': 'state'
+        },
+        {
+            'name': 'Positive',
+            'accessor': 'positive'
+        },
+        {
+            'name': 'Deaths',
+            'accessor': 'death'
+        },
+        {
+            'name': 'Hospitalized',
+            'accessor': 'hospitalizedCurrently'
+        },
+        // {
+        //     'name': 'In ICU Currently',
+        //     'accessor': 'inIcuCurrently'
+        // },
+        {
+            'name': 'Data Quality',
+            'accessor': 'dataQualityGrade'
+        }
+    ]
+    results.innerHTML = createTable(cols, data, 'US States current info');
     $('#searchState').on('keyup', function() {
         var value = $(this).val().toLowerCase();
         $('#resultsTable tr').filter(function() {
@@ -116,12 +153,16 @@ function statesCurrent(data) {
 
 function usCurrent(data) {
     var usCurrentTemplate = `
-        <h3>Current US Cases</h3>
-        <h5>Total Deaths: ${addCommas(data.death)}</h5>
-        <h5>Positive: ${addCommas(data.positive)}</h5>
-        <h5>Currently Hospitalized: ${addCommas(data.hospitalizedCurrently)}</h5>
-        <h5>Currently in ICU: ${addCommas(data.inIcuCurrently)}</h5>
-        <h5>Currently on Ventilater: ${addCommas(data.onVentilatorCurrently)}</h5>
+        <div class="jumbotron jumbotron-fluid bg-info text-light">
+            <div class="container">
+                <h1 class="display-4">Current US Cases</h1>
+                <p class="lead">Total Deaths: ${addCommas(data.death)}</p>
+                <p class="lead">Positive: ${addCommas(data.positive)}</p>
+                <p class="lead">Currently Hospitalized: ${addCommas(data.hospitalizedCurrently)}</p>
+                <p class="lead">Currently in ICU: ${addCommas(data.inIcuCurrently)}</p>
+                <p class="lead">Currently on Ventilater: ${addCommas(data.onVentilatorCurrently)}</p>
+            </div>
+        </div>
         `
     results.innerHTML = usCurrentTemplate;
 }
@@ -145,5 +186,6 @@ function submit() {
 
 window.onload = function() {
     this.createDropdown();
+    this.getResults(this.form.elements[0].value);
 }
 
