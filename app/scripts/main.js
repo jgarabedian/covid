@@ -49,9 +49,9 @@ function createDropdown() {
 }
 
 function createTable(cols, rows, caption) {
-    let html = `<table class="table table-hover">`;
+    let html = '<table class="table table-hover">';
     html += `<caption>${caption}</caption>`;
-    html += `<thead><tr class="table-info">`;
+    html += '<thead><tr class="table-info">';
     for (let col of cols) {
         html += `<th scope="col">${col.name}</th>`
     }
@@ -59,7 +59,7 @@ function createTable(cols, rows, caption) {
     html += '<tbody id="resultsTable">'
     
     for (let row of rows) {
-        html += `<tr>`
+        html += '<tr>'
         for (let col of cols) {
             if(col.accessor === 'date') {
                 let date = row[col.accessor].toString()
