@@ -57,17 +57,18 @@ function createTable(cols, rows, caption) {
     }
     html += '</tr></thead>'
     html += '<tbody id="resultsTable">'
-    
     for (let row of rows) {
         html += '<tr>'
+        var first = true;
         for (let col of cols) {
             if(col.accessor === 'date') {
-                let date = row[col.accessor].toString()
-                date = `${date.substring(0,4)}-${date.substring(4,6)}-${date.substring(6,8)}`
-                html += `<td>${date}</td>`
-            } else {
-                html += `<td>${!isNaN(row[col.accessor]) ? addCommas(row[col.accessor]) : row[col.accessor]}</td>`
-            } 
+                row[col.accessor] = formatDate(row[col.accessor])
+            }
+            html += `<t${first ? 'h scope="row"' : 'd'}>
+                        ${!isNaN(row[col.accessor]) ? addCommas(row[col.accessor]) : row[col.accessor]}
+                    </t${first ? 'h' : 'd'}>`
+            first = false;
+            
         }
         html += '</tr>'
         
@@ -165,6 +166,11 @@ function usCurrent(data) {
         </div>
         `
     results.innerHTML = usCurrentTemplate;
+}
+
+function formatDate(string) {
+    string = string.toString();
+    return `${string.substring(0,4)}-${string.substring(4,6)}-${string.substring(6,8)}`
 }
 
 function addCommas(num) {
